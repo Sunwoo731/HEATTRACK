@@ -1,0 +1,50 @@
+project:
+  name: "HEATTRACK"
+  description: "Satellite Thermal Anomaly Detection System"
+  crs: "EPSG:4326"
+
+paths:
+  data_root: "data"
+  raw_satellite: "data/raw_satellite"
+  simulated_pipes: "data/simulated_pipes/synthetic_pipes_all.geojson"
+  processed: "data/processed"
+  models: "models_checkpoints"
+  outputs: "outputs"
+  logs: "logs"
+
+satellite:
+  ee_project_id: "your-google-cloud-project-id" # REPLACE ME
+  landsat_collection: "LANDSAT/LC08/C02/T1_L2"
+  sentinel_collection: "COPERNICUS/S2_SR_HARMONIZED"
+  roi_buffer_meters: 2000
+
+simulation:
+  accident_data_path: "data/sample/accident_data.csv"
+  leak_intensity_min: 0.3
+  leak_intensity_max: 0.6
+
+models:
+  autoencoder:
+    patch_size: 5
+    hidden_layers: [16, 8, 16]
+    max_iter: 50
+    batch_size: 32
+    learning_rate: 0.001
+  isolation_forest:
+    n_estimators: 100
+    contamination: 0.01
+
+visualization:
+  cmap: "jet"
+  save_format: "png"
+
+locations:
+  - name: 'Goyang_Baekseok'
+    lat: 37.643
+    lon: 126.787
+    date: '2018-12-04'
+  - name: 'Bundang_Jeongja'
+    lat: 37.365
+    lon: 127.110
+    date: '2019-12-15'
+  # Add more from original list if needed

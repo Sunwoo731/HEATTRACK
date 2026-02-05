@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+.venv
+venv/
+ENV/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Geospatial Data (Large files)
+*.tif
+*.tiff
+*.geotiff
+*.nc
+*.hdf
+*.h5
+*.grib
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
+*.qpj
+*.geojson
+*.gpkg
+*.zip
+*.tar.gz
+*.SAFE
+
+# Specific directories
+data/raw/*
+data/processed/*
+data/simulated_pipes/*
+!data/sample/.gitkeep
+models_checkpoints/*
+outputs/*
+logs/*
+GIS데이터/
+
+# OS
+.DS_Store
+Thumbs.db
