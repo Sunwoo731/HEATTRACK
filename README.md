@@ -3,30 +3,32 @@
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-**HEATTRACK** is an AI-driven geospatial analysis system designed to detect district heating pipe leaks using multi-source satellite imagery. By fusing Land Surface Temperature (LST) data from Landsat 8/9 with high-resolution Sentinel-2 optical data, the system achieves 10m-resolution thermal mapping to pinpoint potential anomalies in underground infrastructure.
+**HEATTRACK** is a **Physics-Aware AI System** for detecting district heating pipe leaks using **Arirang-3A (KOMPSAT-3A)** satellite imagery. By combining thermal diffusion physics with deep learning (TS²uRF), it identifies micro-leaks in underground infrastructure with high precision.
 
 ## 🚀 Key Features
 
-*   **Multi-Sensor Fusion**: Combines Landsat 8/9 (Thermal) and Sentinel-2 (Optical) to enhance thermal resolution (100m → 10m).
-*   **AI-Driven Downscaling**: Utilizes NDVI-based sharpening and Deep Learning (MLP AutoEncoder) algorithms.
-*   **Automated Anomaly Detection**: Unsupervised learning (Isolation Forest) to identify thermal hotspots deviating from the norm.
-*   **Synthetic Data Generation**: Physics-informed simulator for generating pipe leak scenarios for model validation.
+*   **TS²uRF Super-Resolution**: Fuses KOMPSAT-3A (Thermal) and Sentinel-2 (Optical) to achieve **10m resolution** (R²=0.76).
+*   **Physics-Aware AutoEncoder**: Incorporates thermal diffusion equations into the loss function to minimize false alarms.
+*   **High-Precision Detection**: Achieved **AUC 0.9371** (vs. 0.9047 for statistical models), validating effectiveness in Anyang downtown test sites.
 
-## 📊 Detection Results
+---
 
-The system successfully detects thermal anomalies in urban environments. Below are actual results from the analysis.
+## 📊 Detection Results & Analysis
 
-### 1. Thermal Anomaly Map
-Downscaled thermal map (10m) overlaid with the pipe network. The model identifies high-risk areas (red) intersecting with district heating pipes (cyan).
-![Thermal Analysis Result](docs/assets/Visual_Report.png)
+### 1. TS²uRF Super-Resolution (Before vs After)
+Demonstrates the restoration of 10m-level thermal details from blurred Arirang satellite imagery.
+![Super Resolution Result](docs/assets/new_arirang_consolidated.png)
+> **Result**: Average R² Score **0.7608** (Successful structural restoration)
 
-### 2. AutoEncoder Reconstruction
-The AutoEncoder learns the "normal" thermal patterns. When it tries to reconstruct a leak (anomaly), it fails, resulting in a high reconstruction error.
-![AutoEncoder Reconstruction](docs/assets/AE_Recon_Examples.png)
+### 2. Anomaly Detection Performance (ROC Curve)
+Comparison between the proposed Physics-Aware model (Red) and traditional statistical monitoring (Blue).
+![ROC Curve](docs/assets/roc_curve_analysis.png)
+> **Result**: **AUC 0.937** (approx. 3.2%p improvement over baseline)
 
-### 3. Anomaly Score Distribution
-Separation of normal background data (Blue) and potential leak anomalies (Red) using the Isolation Forest model.
-![Score Distribution](docs/assets/Final_Score_Dist.png)
+### 3. Applied Case: Anyang Downtown Heatmap
+Visualized "Linear Anomalies" along the major district heating pipelines in Pyeongchon, Anyang.
+![Anyang Heatmap](docs/assets/anyang_zoom_report.png)
+> **Result**: Successfully pinpointed high-risk segments matching underground facility maps.
 
 ---
 
@@ -34,12 +36,12 @@ Separation of normal background data (Blue) and potential leak anomalies (Red) u
 
 The pipeline consists of four main stages:
 
-1.  **Data Acquisition**: Automated fetching of satellite imagery from Google Earth Engine (GEE).
-2.  **Preprocessing**: Cloud masking, radiometric calibration, and coregistration.
-3.  **Analysis**:
-    *   *Downscaling*: Enhancing thermal map resolution.
-    *   *Detection*: Identifying pipe network intersections with thermal anomalies.
-4.  **Reporting**: Generating visual dashboards and risk maps.
+1.  **Data Acquisition**: KOMPSAT-3A (Arirang) Thermal Infrared + Sentinel-2 MSI.
+2.  **Super-Resolution (TS²uRF)**: Restoring spatial details of thermal imagery using logic-based texture transfer from optical data.
+3.  **Physics-Informed Modeling**:
+    *   *Hybrid Loss*: MSE + Thermal Diffusion Constraint.
+    *   *Normal Learning*: Learning thermodynamic patterns of safe buried pipes.
+4.  **Reporting**: Visualizing "Linear Anomalies" along the transmission network.
 
 ## 📂 Project Structure
 
@@ -102,7 +104,7 @@ python -m src.main pipeline
 
 ## 📊 Data & Reproducibility
 
-*   **Satellite Data**: Sources from USGS (Landsat) and Copernicus (Sentinel-2) via Google Earth Engine.
+*   **Satellite Data**: Sources from KARI (KOMPSAT) and Copernicus (Sentinel-2).
 *   **Pipe Data**: Due to security regulations, real underground facility maps cannot be shared. A **synthetic generator** (`src.data.synthetic`) is provided to create realistic mock data for reproduction.
 
 ## 🛡 License
